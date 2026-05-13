@@ -20,6 +20,23 @@
 # META   }
 # META }
 
+# MARKDOWN ********************
+
+# Having A Demo****
+
+
+# CELL ********************
+
+df = spark.sql("SELECT * FROM Dev_Lakehouse.dbo.Address_LH LIMIT 1000")
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # MAGIC %%sql
