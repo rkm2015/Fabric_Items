@@ -1,0 +1,20 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["DirectLake - Dev_Lakehouse"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DirectLakeOnOneLakeInWeb","RemoteModeling","WebModelingEdit"]
+
+ref table 'Details Customer'
+ref table dim_date
+ref table 'Measures Transactions'
+ref table 'Details Products'
+ref table fact_order_fulfillment
+

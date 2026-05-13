@@ -1,0 +1,61 @@
+table fact_sales_current_snapshot
+	lineageTag: dab0012d-7c40-4736-9ac6-f776a235c0b5
+	sourceLineageTag: [GOLD_LAYER].[fact_sales_current_snapshot]
+
+	column order_id
+		dataType: string
+		lineageTag: b23596dd-b0bd-4124-b3d4-d8208285c831
+		sourceLineageTag: order_id
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 8e60718c-6c60-4673-a662-0414ffae89db
+		sourceLineageTag: customer_sk
+		summarizeBy: none
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 48cb6841-ed86-488c-b120-bfd0a1b8f6b8
+		sourceLineageTag: product_sk
+		summarizeBy: none
+		sourceColumn: product_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 47e3ab02-d595-4a94-9a66-aa4e94235ee3
+		sourceLineageTag: date_sk
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount
+		dataType: double
+		lineageTag: c2df31fb-a800-4d99-91a3-2eae5ad3c5c2
+		sourceLineageTag: amount
+		summarizeBy: sum
+		sourceColumn: amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_sales_current_snapshot = entity
+		mode: directLake
+		source
+			entityName: fact_sales_current_snapshot
+			schemaName: GOLD_LAYER
+			expressionSource: 'DirectLake - Dev_Lakehouse'
+

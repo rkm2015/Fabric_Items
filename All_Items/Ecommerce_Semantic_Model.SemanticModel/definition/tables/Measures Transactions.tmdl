@@ -1,0 +1,63 @@
+table 'Measures Transactions'
+	lineageTag: 8ed09f33-9437-45f7-b171-c08b360edaeb
+	sourceLineageTag: [GOLD_LAYER].[fact_sales_standard]
+
+	column order_id
+		dataType: string
+		lineageTag: 1d4e9073-c2b0-4196-8c6d-e186472b8768
+		sourceLineageTag: order_id
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 9459dc7a-52df-47eb-8390-09ddf0d13f50
+		sourceLineageTag: customer_sk
+		summarizeBy: none
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 45531a53-9216-4a16-91cf-e3d8b441035c
+		sourceLineageTag: product_sk
+		summarizeBy: none
+		sourceColumn: product_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 420c41d6-dbe5-4938-8d70-cbf3a0131408
+		sourceLineageTag: date_sk
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount
+		dataType: double
+		lineageTag: 8d3d4a54-d524-4f82-aad6-1a2032ddee40
+		sourceLineageTag: amount
+		summarizeBy: sum
+		sourceColumn: amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Measures Transactions' = entity
+		mode: directLake
+		source
+			entityName: fact_sales_standard
+			schemaName: GOLD_LAYER
+			expressionSource: 'DirectLake - Dev_Lakehouse'
+
+	changedProperty = Name
+

@@ -1,0 +1,109 @@
+table dim_product
+	lineageTag: b90a043a-8e3f-4015-acc0-07632bcb7ea5
+	sourceLineageTag: [GOLD_LAYER].[dim_product]
+
+	column product_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 11d6018a-fb8a-4ec8-86eb-a253e3e8b3e6
+		sourceLineageTag: product_sk
+		summarizeBy: none
+		sourceColumn: product_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e0230ea-327d-4174-b474-61a7134395a2
+		sourceLineageTag: product_id
+		summarizeBy: sum
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_code
+		dataType: string
+		lineageTag: 5da540c5-68c7-456d-aa77-62d0dcfdc4d8
+		sourceLineageTag: product_code
+		summarizeBy: none
+		sourceColumn: product_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: 5fcbadd8-5566-4b72-97f5-b8d30ee87850
+		sourceLineageTag: product_name
+		summarizeBy: none
+		sourceColumn: product_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: a71102ec-4646-4691-82cd-42560964b047
+		sourceLineageTag: category
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column sub_category
+		dataType: string
+		lineageTag: a247c3d1-d9bb-42f0-8f36-94848538ef6a
+		sourceLineageTag: sub_category
+		summarizeBy: none
+		sourceColumn: sub_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column list_price
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: d9d5e88f-e525-43a9-a60f-4efa86902725
+		sourceLineageTag: list_price
+		summarizeBy: sum
+		sourceColumn: list_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column valid_from
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b8c9acc0-4a23-4abd-9716-638e05c7228e
+		sourceLineageTag: valid_from
+		summarizeBy: none
+		sourceColumn: valid_from
+
+		annotation SummarizationSetBy = Automatic
+
+	column valid_to
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 95031457-880e-43de-a947-86eebbf473f3
+		sourceLineageTag: valid_to
+		summarizeBy: none
+		sourceColumn: valid_to
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_current
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 76e1eb60-d53c-4b8f-920a-b76f25a147ad
+		sourceLineageTag: is_current
+		summarizeBy: none
+		sourceColumn: is_current
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = entity
+		mode: directLake
+		source
+			entityName: dim_product
+			schemaName: GOLD_LAYER
+			expressionSource: 'DirectLake - Dev_Lakehouse'
+

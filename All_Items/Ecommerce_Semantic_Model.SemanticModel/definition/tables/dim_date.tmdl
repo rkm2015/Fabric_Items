@@ -1,0 +1,91 @@
+table dim_date
+	lineageTag: a429924a-1317-4419-8588-a1db97fdc8c5
+	sourceLineageTag: [GOLD_LAYER].[dim_date]
+	dataCategory: Time
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: c998fe71-9495-43ea-ad26-4239f2116b74
+		sourceLineageTag: date_sk
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column calendar_date
+		dataType: dateTime
+		isKey
+		formatString: General Date
+		lineageTag: 8b7dd852-ad0f-4845-8d6a-e17a398bd21b
+		sourceLineageTag: calendar_date
+		summarizeBy: none
+		sourceColumn: calendar_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: d66dfc84-2794-4618-b690-ef000579ca73
+		sourceLineageTag: year
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: 3a62c928-723b-4151-a695-c0491195393c
+		sourceLineageTag: month
+		summarizeBy: sum
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		lineageTag: 865d2404-1cf6-4c0a-9802-7aeaa4bfd7d6
+		sourceLineageTag: month_name
+		summarizeBy: none
+		sourceColumn: month_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: b5e63c7f-9272-405d-976a-0735cfe95168
+		sourceLineageTag: quarter
+		summarizeBy: sum
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_name
+		dataType: string
+		lineageTag: cf458db6-4c76-4b4c-9717-133cae37d6a6
+		sourceLineageTag: day_name
+		summarizeBy: none
+		sourceColumn: day_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_weekend
+		dataType: int64
+		formatString: 0
+		lineageTag: 1315637e-4b9e-4e8e-a37a-8ee38f0ab738
+		sourceLineageTag: is_weekend
+		summarizeBy: sum
+		sourceColumn: is_weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = entity
+		mode: directLake
+		source
+			entityName: dim_date
+			schemaName: GOLD_LAYER
+			expressionSource: 'DirectLake - Dev_Lakehouse'
+

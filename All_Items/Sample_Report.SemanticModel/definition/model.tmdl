@@ -1,0 +1,19 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["ControlTable","CopyLog"]
+
+ref table ControlTable
+ref table DateTableTemplate_dac7e3b4-bb4e-4668-add0-c8b84d87fc71
+ref table LocalDateTable_f11b47c2-89e7-4294-924a-7df0a8e01a0b
+ref table CopyLog
+
+ref cultureInfo en-US
+

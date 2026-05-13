@@ -1,0 +1,36 @@
+relationship 0f154460-01cd-e62e-bc04-87e9c1678c76
+	fromColumn: fact_sales_standard.customer_sk
+	toColumn: dim_customer.customer_sk
+
+relationship bf5ddc44-2b20-772a-361c-f9caae526a9f
+	fromColumn: fact_sales_standard.date_sk
+	toColumn: dim_date.date_sk
+
+relationship 1385325a-ff53-8e87-bff1-294b3083e6a7
+	fromColumn: fact_sales_standard.product_sk
+	toColumn: dim_product.product_sk
+
+relationship fa533c1f-7c9c-0a4e-9d4f-e43d18306526
+	fromColumn: fact_sales_current_snapshot.customer_sk
+	toColumn: dim_customer.customer_sk
+
+relationship b7ab6d2e-0242-5fe1-4c5d-f26518e84be5
+	fromColumn: fact_sales_current_snapshot.date_sk
+	toColumn: dim_date.date_sk
+
+relationship 750f4909-197f-9f53-340d-bf6e02891475
+	fromColumn: fact_sales_current_snapshot.product_sk
+	toColumn: dim_product.product_sk
+
+relationship 1dcbee40-077c-22cb-8d23-5b29f5ea6de6
+	fromColumn: fact_order_fulfillment.customer_sk
+	toColumn: dim_customer.customer_sk
+
+relationship 743bc373-8edb-cec3-62f4-4fb1e2b7e04f
+	fromColumn: fact_order_fulfillment.date_sk
+	toColumn: dim_date.date_sk
+
+relationship 60ad3bd6-79af-dc10-6118-2598df72109f
+	fromColumn: fact_order_fulfillment.product_sk
+	toColumn: dim_product.product_sk
+

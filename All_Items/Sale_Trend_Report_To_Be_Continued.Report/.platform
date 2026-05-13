@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Sale_Trend_Report_To_Be_Continued"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "892f5eac-efb3-84b8-42b3-5598ae22acf3"
+  }
+}

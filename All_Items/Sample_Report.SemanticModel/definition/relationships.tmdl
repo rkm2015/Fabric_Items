@@ -1,0 +1,9 @@
+relationship 7cdf9079-b8de-4ebf-b44c-2263033ab565
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ControlTable.Watermark_Value
+	toColumn: LocalDateTable_f11b47c2-89e7-4294-924a-7df0a8e01a0b.Date
+
+relationship 11cd756a-7bcd-2110-0388-8e4d9e5103ef
+	fromColumn: CopyLog.TableName
+	toColumn: ControlTable.SourceTableName
+

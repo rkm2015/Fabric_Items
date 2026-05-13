@@ -1,0 +1,81 @@
+table fact_sales_standard
+	lineageTag: f173e18e-f72d-4a0a-b3fc-43506ad13324
+	sourceLineageTag: [GOLD_LAYER].[fact_sales_standard]
+
+	measure 'Total Sales' = SUM(fact_sales_standard[amount])
+		lineageTag: d352fed8-5e17-4607-82b9-7133c7fb3821
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Orders' = DISTINCTCOUNT(fact_sales_standard[order_id])
+		formatString: 0
+		lineageTag: 1d4f0bb8-efb3-48f7-b7ed-602c522063bb
+
+		changedProperty = Name
+
+	measure 'Average Order Value' = DIVIDE([Total Sales], [Total Orders], 0)
+		lineageTag: 6f066f5a-de90-45c7-ba66-d73846894d2a
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_id
+		dataType: string
+		lineageTag: 4f3e3139-ac32-4f0b-9496-9c257024a7ac
+		sourceLineageTag: order_id
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 66f95ada-f56a-4ee0-be5b-c47011d6c3a4
+		sourceLineageTag: customer_sk
+		summarizeBy: none
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: ca96f0b8-90a1-41fb-9363-4797360ea57f
+		sourceLineageTag: product_sk
+		summarizeBy: none
+		sourceColumn: product_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 23500b61-306b-464e-ad92-51c190083643
+		sourceLineageTag: date_sk
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount
+		dataType: double
+		lineageTag: cb5fc41a-0dcb-4ea9-927c-3eca8590e8c7
+		sourceLineageTag: amount
+		summarizeBy: sum
+		sourceColumn: amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_sales_standard = entity
+		mode: directLake
+		source
+			entityName: fact_sales_standard
+			schemaName: GOLD_LAYER
+			expressionSource: 'DirectLake - Dev_Lakehouse'
+

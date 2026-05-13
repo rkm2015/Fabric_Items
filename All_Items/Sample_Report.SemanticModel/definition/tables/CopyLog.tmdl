@@ -1,0 +1,74 @@
+table CopyLog
+	lineageTag: 59fa92d2-b567-460b-bfbc-4bfdc44bc517
+
+	column LogID
+		dataType: int64
+		formatString: 0
+		lineageTag: 3216e4f8-c4b9-4fad-a79b-571bb8821cae
+		summarizeBy: count
+		sourceColumn: LogID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TableName
+		dataType: string
+		lineageTag: 9eb0484e-cb87-46f8-ab40-078492ce91b9
+		summarizeBy: none
+		sourceColumn: TableName
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 167517cd-6ec6-41de-8cc7-9ead84d0ee11
+		summarizeBy: none
+		sourceColumn: StartTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 773881ae-280d-4a79-9792-6e78e264fdf3
+		summarizeBy: none
+		sourceColumn: EndTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column RowsInserted
+		dataType: int64
+		formatString: 0
+		lineageTag: a129fc76-154d-42ff-94bb-ecfeb47d948c
+		summarizeBy: sum
+		sourceColumn: RowsInserted
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: abaa8c91-21d2-4a0b-bc62-69a7b49ee327
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column PipelineRunId
+		dataType: string
+		lineageTag: 92dc7fc4-894a-4f11-91bc-c9eec1af702b
+		summarizeBy: none
+		sourceColumn: PipelineRunId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CopyLog = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("5kixbhi4ndte7d3w64fgn6wh34-6pb7qnk7bkmefis3q7ey4ncajy.datawarehouse.fabric.microsoft.com", "AdventureWork_DWH"),
+				    dbo_CopyLog = Source{[Schema="dbo",Item="CopyLog"]}[Data]
+				in
+				    dbo_CopyLog
+
+	annotation PBI_ResultType = Table
+

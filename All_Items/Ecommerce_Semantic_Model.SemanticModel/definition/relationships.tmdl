@@ -1,0 +1,24 @@
+relationship a34af89c-88c4-d727-2c33-afd22ae53045
+	fromColumn: 'Measures Transactions'.customer_sk
+	toColumn: 'Details Customer'.customer_sk
+
+relationship 02b84cbb-9143-3af0-d1f3-27b03cfc48fe
+	fromColumn: 'Measures Transactions'.date_sk
+	toColumn: dim_date.date_sk
+
+relationship 76deb3cd-a4cd-8b44-c886-01509f7f7101
+	fromColumn: 'Measures Transactions'.product_sk
+	toColumn: 'Details Products'.product_sk
+
+relationship 4c1abc93-fe3a-5945-6c74-99f412333308
+	fromColumn: fact_order_fulfillment.customer_sk
+	toColumn: 'Details Customer'.customer_sk
+
+relationship 620e2a38-ca64-f991-9ea3-7b5f38f7cf5a
+	fromColumn: fact_order_fulfillment.product_sk
+	toColumn: 'Details Products'.product_sk
+
+relationship 6d39dd5d-2dd7-efe4-f396-02bc77c0c6e0
+	fromColumn: fact_order_fulfillment.date_sk
+	toColumn: dim_date.date_sk
+

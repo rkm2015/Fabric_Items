@@ -1,0 +1,484 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "DataWarehouseSource",
+            "sqlReaderQuery": {
+              "value": "@concat('SELECT ISNULL(WatermarkValue, ''2025-01-01'') AS WatermarkValue, SourceTableName, TargetTableName,Partition_column FROM dbo.ControlTable where StreamNumber=', string(pipeline().parameters.pram_StreamNumber))",
+              "type": "Expression"
+            },
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "DataWarehouseTable",
+            "schema": [],
+            "linkedService": {
+              "name": "AdventureWork_DWH",
+              "properties": {
+                "type": "DataWarehouse",
+                "typeProperties": {
+                  "artifactId": "d3af9545-2033-4a1e-a469-8140e45a591c",
+                  "endpoint": "5kixbhi4ndte7d3w64fgn6wh34-6pb7qnk7bkmefis3q7ey4ncajy.datawarehouse.fabric.microsoft.com",
+                  "workspaceId": "35f8c3f3-0a5f-4298-a25b-87c98e34404e"
+                },
+                "annotations": []
+              }
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "LookupControlTable",
+        "dependsOn": []
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "isSequential": false,
+          "items": {
+            "value": "@activity('LookupControlTable').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "Copy",
+              "typeProperties": {
+                "source": {
+                  "type": "FabricSqlDatabaseSource",
+                  "sqlReaderQuery": {
+                    "value": "@concat('SELECT * FROM [SalesLT].[', item().SourceTableName, '] WHERE ModifiedDate > ''', formatDateTime(activity('LookupOldWaterMarkActivity').output.firstRow.WatermarkValue, 'yyyy-MM-dd HH:mm:ss'), ''' AND ModifiedDate <= ''', formatDateTime(activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue, 'yyyy-MM-dd HH:mm:ss'), '''')",
+                    "type": "Expression"
+                  },
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00",
+                  "datasetSettings": {
+                    "type": "FabricSqlDatabaseTable",
+                    "schema": [],
+                    "connectionSettings": {
+                      "name": "Fabric_SQL_DB2",
+                      "properties": {
+                        "type": "FabricSqlDatabase",
+                        "typeProperties": {
+                          "artifactId": "26c67db1-4ff5-952f-46e7-16f1f4954241",
+                          "workspaceId": "00000000-0000-0000-0000-000000000000"
+                        },
+                        "externalReferences": {
+                          "connection": "5c2cac49-c0f7-40c3-a861-bb5b2bbdf3c8"
+                        },
+                        "annotations": []
+                      }
+                    },
+                    "annotations": []
+                  }
+                },
+                "sink": {
+                  "type": "LakehouseTableSink",
+                  "tableActionOption": "Append",
+                  "applyVOrder": false,
+                  "partitionOption": "PartitionByKey",
+                  "partitionNameList": {
+                    "value": "@createArray(item().Partition_column)",
+                    "type": "Expression"
+                  },
+                  "datasetSettings": {
+                    "type": "LakehouseTable",
+                    "typeProperties": {
+                      "schema": "demo",
+                      "table": {
+                        "value": "@{item().TargetTableName}",
+                        "type": "Expression"
+                      }
+                    },
+                    "schema": [],
+                    "linkedService": {
+                      "name": "Dev_Lakehouse",
+                      "properties": {
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "artifactId": "68684fba-c40a-82ed-42a1-2b263aed7b50",
+                          "workspaceId": "00000000-0000-0000-0000-000000000000",
+                          "rootFolder": "Tables"
+                        },
+                        "annotations": []
+                      }
+                    },
+                    "annotations": []
+                  }
+                },
+                "translator": {
+                  "type": "TabularTranslator",
+                  "typeConversion": true,
+                  "typeConversionSettings": {
+                    "allowDataTruncation": true,
+                    "treatBooleanAsNumber": false
+                  }
+                },
+                "enableStaging": false
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Load_Lakehouse_Table",
+              "dependsOn": [
+                {
+                  "activity": "LookupOldWaterMarkActivity",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                },
+                {
+                  "activity": "LookupNewWaterMarkActivity",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Lookup",
+              "typeProperties": {
+                "source": {
+                  "type": "DataWarehouseSource",
+                  "sqlReaderQuery": {
+                    "value": "@concat('SELECT \n    ISNULL(WatermarkValue, ''2025-01-01'') AS WatermarkValue,\nSourceTableName,\nTargetTableName\nFROM dbo.ControlTable\nWHERE SourceTableName = ''',\nitem().SourceTableName,'''' )",
+                    "type": "Expression"
+                  },
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00"
+                },
+                "datasetSettings": {
+                  "type": "DataWarehouseTable",
+                  "schema": [],
+                  "linkedService": {
+                    "name": "AdventureWork_DWH",
+                    "properties": {
+                      "type": "DataWarehouse",
+                      "typeProperties": {
+                        "artifactId": "d3af9545-2033-4a1e-a469-8140e45a591c",
+                        "endpoint": "5kixbhi4ndte7d3w64fgn6wh34-6pb7qnk7bkmefis3q7ey4ncajy.datawarehouse.fabric.microsoft.com",
+                        "workspaceId": "35f8c3f3-0a5f-4298-a25b-87c98e34404e"
+                      },
+                      "annotations": []
+                    }
+                  },
+                  "annotations": []
+                },
+                "firstRowOnly": true
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "LookupOldWaterMarkActivity",
+              "dependsOn": []
+            },
+            {
+              "type": "Lookup",
+              "typeProperties": {
+                "source": {
+                  "type": "FabricSqlDatabaseSource",
+                  "sqlReaderQuery": {
+                    "value": "@concat('select max(ModifiedDate) AS NewWatermarkvalue   from [SalesLT].',item().SourceTableName)\n\n",
+                    "type": "Expression"
+                  },
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00"
+                },
+                "datasetSettings": {
+                  "type": "FabricSqlDatabaseTable",
+                  "schema": [],
+                  "connectionSettings": {
+                    "name": "Fabric_SQL_DB2",
+                    "properties": {
+                      "type": "FabricSqlDatabase",
+                      "typeProperties": {
+                        "artifactId": "f4954241-16f1-46e7-952f-4ff526c67db1",
+                        "workspaceId": "35f8c3f3-0a5f-4298-a25b-87c98e34404e"
+                      },
+                      "externalReferences": {
+                        "connection": "5c2cac49-c0f7-40c3-a861-bb5b2bbdf3c8"
+                      },
+                      "annotations": []
+                    }
+                  },
+                  "annotations": []
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "LookupNewWaterMarkActivity2",
+              "state": "Inactive",
+              "onInactiveMarkAs": "Succeeded",
+              "dependsOn": []
+            },
+            {
+              "type": "SqlServerStoredProcedure",
+              "typeProperties": {
+                "storedProcedureName": "[dbo].[usp_write_watermark2]",
+                "storedProcedureParameters": {
+                  "LastModifiedtime": {
+                    "value": {
+                      "value": "@activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue",
+                      "type": "Expression"
+                    },
+                    "type": "Datetime"
+                  },
+                  "TableName": {
+                    "value": {
+                      "value": "@activity('LookupOldWaterMarkActivity').output.firstRow.SourceTableName",
+                      "type": "Expression"
+                    },
+                    "type": "String"
+                  }
+                }
+              },
+              "linkedService": {
+                "name": "AdventureWork_DWH",
+                "properties": {
+                  "type": "DataWarehouse",
+                  "typeProperties": {
+                    "artifactId": "d3af9545-2033-4a1e-a469-8140e45a591c",
+                    "endpoint": "5kixbhi4ndte7d3w64fgn6wh34-6pb7qnk7bkmefis3q7ey4ncajy.datawarehouse.fabric.microsoft.com",
+                    "workspaceId": "35f8c3f3-0a5f-4298-a25b-87c98e34404e"
+                  },
+                  "annotations": []
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 10,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Update_Water_Mark",
+              "dependsOn": [
+                {
+                  "activity": "Load_Lakehouse_Table",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "SqlServerStoredProcedure",
+              "typeProperties": {
+                "storedProcedureName": "[dbo].[usp_log_copy_details]",
+                "storedProcedureParameters": {
+                  "TableName": {
+                    "value": {
+                      "value": "@{item().SourceTableName}",
+                      "type": "Expression"
+                    },
+                    "type": "String"
+                  },
+                  "StartTime": {
+                    "value": {
+                      "value": "@{activity('Load_Lakehouse_Table').output.executionDetails[0].start}",
+                      "type": "Expression"
+                    },
+                    "type": "Datetime"
+                  },
+                  "EndTime": {
+                    "value": {
+                      "value": "@{utcnow()}",
+                      "type": "Expression"
+                    },
+                    "type": "Datetime"
+                  },
+                  "RowsInserted": {
+                    "value": {
+                      "value": "@{activity('Load_Lakehouse_Table').output.rowsRead}",
+                      "type": "Expression"
+                    },
+                    "type": "Int32"
+                  },
+                  "Status": {
+                    "value": {
+                      "value": "@{activity('Load_Lakehouse_Table').output.executionDetails[0].status}",
+                      "type": "Expression"
+                    },
+                    "type": "String"
+                  },
+                  "PipelineRunId": {
+                    "value": {
+                      "value": "@{pipeline().RunId}",
+                      "type": "Expression"
+                    },
+                    "type": "String"
+                  }
+                }
+              },
+              "linkedService": {
+                "name": "AdventureWork_DWH",
+                "properties": {
+                  "type": "DataWarehouse",
+                  "typeProperties": {
+                    "artifactId": "d3af9545-2033-4a1e-a469-8140e45a591c",
+                    "endpoint": "5kixbhi4ndte7d3w64fgn6wh34-6pb7qnk7bkmefis3q7ey4ncajy.datawarehouse.fabric.microsoft.com",
+                    "workspaceId": "35f8c3f3-0a5f-4298-a25b-87c98e34404e"
+                  },
+                  "annotations": []
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Update_CopyLog",
+              "dependsOn": [
+                {
+                  "activity": "Load_Lakehouse_Table",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Lookup",
+              "typeProperties": {
+                "source": {
+                  "type": "FabricSqlDatabaseSource",
+                  "sqlReaderQuery": {
+                    "value": "@concat('select DATEADD(second, 1, max(ModifiedDate)) AS NewWatermarkvalue from [SalesLT].', item().SourceTableName)\n",
+                    "type": "Expression"
+                  },
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00"
+                },
+                "datasetSettings": {
+                  "type": "FabricSqlDatabaseTable",
+                  "schema": [],
+                  "connectionSettings": {
+                    "name": "Fabric_SQL_DB2",
+                    "properties": {
+                      "type": "FabricSqlDatabase",
+                      "typeProperties": {
+                        "artifactId": "26c67db1-4ff5-952f-46e7-16f1f4954241",
+                        "workspaceId": "00000000-0000-0000-0000-000000000000"
+                      },
+                      "externalReferences": {
+                        "connection": "5c2cac49-c0f7-40c3-a861-bb5b2bbdf3c8"
+                      },
+                      "annotations": []
+                    }
+                  },
+                  "annotations": []
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "LookupNewWaterMarkActivity",
+              "description": "its rounded up",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "ForEachTable",
+        "dependsOn": [
+          {
+            "activity": "LookupControlTable",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "RefreshSqlEndpoint",
+        "typeProperties": {
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sqlEndpointId": "49e65ff5-c86b-4a42-a986-22b135706692",
+          "recreateTables": false
+        },
+        "externalReferences": {
+          "connection": "d3efd38d-a7b7-4c07-a05c-b623bc18240b"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "RefreshSqlEndpoint1",
+        "dependsOn": [
+          {
+            "activity": "ForEachTable",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Office365Email",
+        "typeProperties": {
+          "body": "<p>Hello , Pipeline has fail. Support team please check </p>",
+          "to": "ranjan.mohapatra6216@gmail.com",
+          "subject": "We have failed yourself"
+        },
+        "externalReferences": {
+          "connection": "45bec54a-8546-4f65-a068-3602781ad593"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Send failed notifcation",
+        "description": "Send failed notifcation",
+        "dependsOn": [
+          {
+            "activity": "RefreshSqlEndpoint1",
+            "dependencyConditions": [
+              "Failed",
+              "Skipped"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "pram_StreamNumber": {
+        "type": "int",
+        "defaultValue": 1
+      }
+    }
+  }
+}

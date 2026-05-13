@@ -1,0 +1,51 @@
+{
+  "config": "{\"version\":\"5.70\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY26SU02\",\"version\":{\"visual\":\"2.6.0\",\"report\":\"3.1.0\",\"page\":\"2.3.0\"},\"type\":2}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}]}}",
+  "layoutOptimization": 0,
+  "resourcePackages": [
+    {
+      "resourcePackage": {
+        "disabled": false,
+        "items": [
+          {
+            "name": "CY26SU02",
+            "path": "BaseThemes/CY26SU02.json",
+            "type": 202
+          }
+        ],
+        "name": "SharedResources",
+        "type": 2
+      }
+    }
+  ],
+  "sections": [
+    {
+      "config": "{}",
+      "displayName": "My First Report",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "5c0e0b9f0ac3c9dd39c6",
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"99bcde756a68dbb0160b\",\"layouts\":[{\"id\":0,\"position\":{\"x\":179.15334548294715,\"y\":179.15334548294715,\"z\":0,\"width\":398.829471491799,\"height\":149.29445456912262,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Min(ControlTable.SourceTableName)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"ControlTable\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"SourceTableName\"}},\"Function\":5},\"Name\":\"Min(ControlTable.SourceTableName)\",\"NativeReferenceName\":\"Count of SourceTableName\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"SourceTableName\"}},\"Function\":5}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 149.29,
+          "width": 398.83,
+          "x": 179.15,
+          "y": 179.15,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"de96cce559353919dae8\",\"layouts\":[{\"id\":0,\"position\":{\"x\":138.63056495704242,\"y\":411.6261390262952,\"z\":1,\"width\":876.5717261129914,\"height\":264.46446237958867,\"tabOrder\":1}}],\"singleVisual\":{\"visualType\":\"columnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"CopyLog.EndTime\",\"active\":true}],\"Y\":[{\"queryRef\":\"CountNonNull(CopyLog.LogID)\"}],\"Series\":[{\"queryRef\":\"CopyLog.PipelineRunId\"}],\"Rows\":[{\"queryRef\":\"CopyLog.StartTime\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"CopyLog\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"EndTime\"},\"Name\":\"CopyLog.EndTime\",\"NativeReferenceName\":\"EndTime\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"LogID\"}},\"Function\":5},\"Name\":\"CountNonNull(CopyLog.LogID)\",\"NativeReferenceName\":\"Count of LogID\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"PipelineRunId\"},\"Name\":\"CopyLog.PipelineRunId\",\"NativeReferenceName\":\"PipelineRunId\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"StartTime\"},\"Name\":\"CopyLog.StartTime\",\"NativeReferenceName\":\"StartTime\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"EndTime\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 264.46,
+          "width": 876.57,
+          "x": 138.63,
+          "y": 411.63,
+          "z": 1.00
+        }
+      ],
+      "width": 1280.00
+    }
+  ]
+}

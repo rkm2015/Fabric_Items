@@ -1,0 +1,115 @@
+table dim_customer
+	lineageTag: 889c69ff-d0d6-4159-8da9-e1a170a4416a
+	sourceLineageTag: [GOLD_LAYER].[dim_customer]
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 77afb864-4b4f-485e-9fb3-a35e666d44a3
+		sourceLineageTag: customer_sk
+		summarizeBy: none
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 40374442-4172-48aa-af81-7cad1f8d3ec2
+		sourceLineageTag: customer_id
+		summarizeBy: sum
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_code
+		dataType: string
+		lineageTag: 76817404-b89a-42c9-9eae-783e49338e51
+		sourceLineageTag: customer_code
+		summarizeBy: none
+		sourceColumn: customer_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: 3879e8c4-53ed-4a7c-9568-f34770f20f42
+		sourceLineageTag: customer_name
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: a2fca7a4-e178-41ed-a8ee-2341c2d7d53f
+		sourceLineageTag: city
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 3abec150-22a2-42a7-a4ac-17ae5b9aec6d
+		sourceLineageTag: state
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: c4b89a81-81d1-418f-a70d-559f3dfd5e5a
+		sourceLineageTag: country
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_type
+		dataType: string
+		lineageTag: c834e9a8-ccbb-412d-be4f-5df7079aec13
+		sourceLineageTag: customer_type
+		summarizeBy: none
+		sourceColumn: customer_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column valid_from
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0f63ce13-f2c5-41b6-a65c-c08a99022177
+		sourceLineageTag: valid_from
+		summarizeBy: none
+		sourceColumn: valid_from
+
+		annotation SummarizationSetBy = Automatic
+
+	column valid_to
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c5f8434a-a7d9-476e-98cd-5d5000002921
+		sourceLineageTag: valid_to
+		summarizeBy: none
+		sourceColumn: valid_to
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_current
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 79602917-ab99-43d0-b093-1e82a276143b
+		sourceLineageTag: is_current
+		summarizeBy: none
+		sourceColumn: is_current
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_customer = entity
+		mode: directLake
+		source
+			entityName: dim_customer
+			schemaName: GOLD_LAYER
+			expressionSource: 'DirectLake - Dev_Lakehouse'
+

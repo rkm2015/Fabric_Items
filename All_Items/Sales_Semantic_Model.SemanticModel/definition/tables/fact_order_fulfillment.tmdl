@@ -1,0 +1,130 @@
+table fact_order_fulfillment
+	lineageTag: efe15d73-252e-447c-aafa-b81d978de31e
+	sourceLineageTag: [GOLD_LAYER].[fact_order_fulfillment]
+
+	measure 'Avg Days to Ship' = AVERAGE(fact_order_fulfillment[days_to_ship])
+		lineageTag: 5a0327d0-6c77-4188-b4d5-9c978ab12ea3
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Fulfillment Rate' =
+			
+			DIVIDE(
+			    CALCULATE(COUNT(fact_order_fulfillment[order_id]), fact_order_fulfillment[is_completed] = TRUE),
+			    COUNT(fact_order_fulfillment[order_id]),
+			    0
+			)
+		lineageTag: cd0d1e2c-31dd-46b0-8cf1-6fe6b0ffab8e
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_id
+		dataType: string
+		lineageTag: 8ef77768-1ac0-4a24-8ade-faf6e3309150
+		sourceLineageTag: order_id
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 07493b30-b5e2-4085-80c8-be66d7ebda1f
+		sourceLineageTag: customer_sk
+		summarizeBy: none
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9adb87f5-45ba-49b4-af93-13c1cda41f1a
+		sourceLineageTag: order_date
+		summarizeBy: none
+		sourceColumn: order_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column ship_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 06e93f48-f88c-46b8-a4d2-6dd5e8e1e3c0
+		sourceLineageTag: ship_date
+		summarizeBy: none
+		sourceColumn: ship_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ce3550bf-7170-4d50-b7c1-b7e4526f488c
+		sourceLineageTag: delivery_date
+		summarizeBy: none
+		sourceColumn: delivery_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column days_to_ship
+		dataType: int64
+		formatString: 0
+		lineageTag: 541911b8-11ec-4ed7-a638-13ab6fe886be
+		sourceLineageTag: days_to_ship
+		summarizeBy: sum
+		sourceColumn: days_to_ship
+
+		annotation SummarizationSetBy = Automatic
+
+	column days_to_deliver
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f751ba6-e3c4-4e91-b5a9-87dc0ec9a17c
+		sourceLineageTag: days_to_deliver
+		summarizeBy: sum
+		sourceColumn: days_to_deliver
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_completed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 85b49d9f-88bc-4ca4-88f4-7242909d3da2
+		sourceLineageTag: is_completed
+		summarizeBy: none
+		sourceColumn: is_completed
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 0dfbc0dc-d4ac-469b-9b01-ab35788a861e
+		sourceLineageTag: product_sk
+		summarizeBy: none
+		sourceColumn: product_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: e9c97674-66dc-4b56-9065-f02ad6a3ecce
+		sourceLineageTag: date_sk
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_order_fulfillment = entity
+		mode: directLake
+		source
+			entityName: fact_order_fulfillment
+			schemaName: GOLD_LAYER
+			expressionSource: 'DirectLake - Dev_Lakehouse'
+

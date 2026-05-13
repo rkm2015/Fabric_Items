@@ -1,0 +1,22 @@
+{
+  "queryset": {
+    "version": "1.0.0",
+    "dataSources": [
+      {
+        "id": "2ed9decd-9952-4a2e-8c20-b5ab10b69136",
+        "clusterUri": "https://trd-yruvwkmths1rz2uyys.z4.kusto.fabric.microsoft.com",
+        "type": "Fabric",
+        "databaseItemId": "8f81d396-8b0e-4a07-ab4e-e60147815b05",
+        "databaseItemName": "Eventhouse_DP700"
+      }
+    ],
+    "tabs": [
+      {
+        "id": "4c7fb727-8a66-483d-90f7-5c5b3c5c986c",
+        "content": "//***********************************************************************************************************\n// Here are two articles to help you get started with KQL:\n// KQL reference guide - https://aka.ms/KQLguide\n// SQL - KQL conversions - https://aka.ms/sqlcheatsheet\n//***********************************************************************************************************\n\n// Use 'take' to view a sample number of records in the table and check the data.\nYellowTaxiTable\n| take 100\n\n\nYellowTaxiTable \n|summarize total_trip_count=count() by VendorID\n\nselect VendorID,count(*) total_trip_count from YellowTaxiTable group by VendorID\n\n\nYellowTaxiTable\n| summarize TotalTrips = count() by VendorID\n| render barchart\n\n\nYellowTaxiTable\n| summarize TotalTrips = countif(toreal(trip_distance) > 10) by passenger_count\n\nYellowTaxiTable\n| summarize TotalTrips = countif((trip_distance) > 10) by passenger_count\n\n\n\n\nYellowTaxiTable | take 10\n\n| extend total_amount_calc = fare_amount + tip_amount\n\n\n\nYellowTaxiTable\n| summarize trips = count() by bin(tpep_pickup_datetime, 1h)\n\n// This query returns the number of ingestions per hour in the given table.\nYellowTaxiTable\n| summarize IngestionCount = count() by bin(ingestion_time(), 1h)\n\n\n\ndatatable(CourseID:int, CourseName:string, UnitsSold:int, CourseRating:real)[\n\t1,\"AZ-104 Azure Administrator\",150,4.4,\n\t2,\"DP-600 Fabric Analytics Engineer Associate\",80,4.5,\n\t3,\"DP-700 Fabric Data Engineer Associate\",220,4.6,\n\t4,\"AZ-305 Azure Architect\",60,4.2,\n        5,\"DP-900 Azure Data Fundamentals\",300,4.5\n]\n| project CourseID,CourseName,UnitsSold,CourseRating\n|sort by UnitsSold\n\n.create table ClickStream\n ( ipAddress:string, timeStamp:datetime, userId:string, path:string, queryParameters:string, eventDuration:long )",
+        "title": "Tab",
+        "dataSourceId": "2ed9decd-9952-4a2e-8c20-b5ab10b69136"
+      }
+    ]
+  }
+}

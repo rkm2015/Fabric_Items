@@ -1,0 +1,326 @@
+{
+  "sources": [
+    {
+      "id": "4a9ff7b3-1b76-4e65-84b2-362d174da0be",
+      "name": "yellowtaxi",
+      "type": "SampleData",
+      "properties": {
+        "type": "YellowTaxi"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "id": "9e5b0850-529f-4e41-93c4-eca4f3dbc2f7",
+      "name": "Eventhouse",
+      "type": "Eventhouse",
+      "properties": {
+        "dataIngestionMode": "ProcessedIngestion",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "itemId": "47815b05-e601-ab4e-4a07-8b0e8f81d396",
+        "databaseName": "Eventhouse_DP700",
+        "tableName": "YellowTaxiTable",
+        "inputSerialization": {
+          "type": "Json",
+          "properties": {
+            "encoding": "UTF8"
+          }
+        }
+      },
+      "inputNodes": [
+        {
+          "name": "Filter_fare"
+        }
+      ],
+      "inputSchemas": [
+        {
+          "name": "Filter_fare",
+          "schema": {
+            "columns": [
+              {
+                "name": "VendorID",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "tpep_pickup_datetime",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "tpep_dropoff_datetime",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "passenger_count",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "trip_distance",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "RatecodeID",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "store_and_fwd_flag",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "PULocationID",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "DOLocationID",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "payment_type",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "fare_amount",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "extra",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "mta_tax",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "tip_amount",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "tolls_amount",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "improvement_surcharge",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "total_amount",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "congestion_surcharge",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "airport_fee",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "streams": [
+    {
+      "id": "d16efd49-6fa5-4dd8-a427-dc30e07097ce",
+      "name": "new_event_stream_dp700-stream",
+      "type": "DefaultStream",
+      "properties": {},
+      "inputNodes": [
+        {
+          "name": "yellowtaxi"
+        }
+      ]
+    }
+  ],
+  "operators": [
+    {
+      "name": "Filter_fare",
+      "type": "Filter",
+      "inputNodes": [
+        {
+          "name": "new_event_stream_dp700-stream"
+        }
+      ],
+      "properties": {
+        "conditions": [
+          {
+            "column": {
+              "expressionType": "ColumnReference",
+              "node": null,
+              "columnName": "fare_amount",
+              "columnPathSegments": []
+            },
+            "operatorType": "GreaterThan",
+            "value": {
+              "expressionType": "Literal",
+              "dataType": "Float",
+              "value": "10"
+            }
+          }
+        ]
+      },
+      "inputSchemas": [
+        {
+          "name": "new_event_stream_dp700-stream",
+          "schema": {
+            "columns": [
+              {
+                "name": "VendorID",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "tpep_pickup_datetime",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "tpep_dropoff_datetime",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "passenger_count",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "trip_distance",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "RatecodeID",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "store_and_fwd_flag",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "PULocationID",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "DOLocationID",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "payment_type",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "fare_amount",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "extra",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "mta_tax",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "tip_amount",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "tolls_amount",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "improvement_surcharge",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "total_amount",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "congestion_surcharge",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "airport_fee",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "compatibilityLevel": "1.1"
+}

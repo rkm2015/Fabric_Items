@@ -1,0 +1,105 @@
+table dim_date
+	lineageTag: e744c82b-fa64-44a4-aa10-5e7fbcc52234
+	sourceLineageTag: [GOLD_LAYER].[dim_date]
+	dataCategory: Time
+
+	measure 'Sales LM' = CALCULATE([Total Sales], DATEADD('dim_date'[calendar_date], -1, MONTH))
+		lineageTag: 7a552a40-5cd8-43f1-b95b-20aa22946f8d
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales MoM %' = DIVIDE([Total Sales] - [Sales LM], [Sales LM], 0)
+		lineageTag: f03d8c35-93cc-4f2c-b5f6-215a6c7809ff
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: dc58e001-3fc1-4d23-b86f-fdea1bab9d5f
+		sourceLineageTag: date_sk
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column calendar_date
+		dataType: dateTime
+		isKey
+		formatString: General Date
+		lineageTag: c109dee6-15e7-4986-98bf-c19ce6c3a214
+		sourceLineageTag: calendar_date
+		summarizeBy: none
+		sourceColumn: calendar_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d53dc54-a595-4ae5-a1dc-7f42589c0220
+		sourceLineageTag: year
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: dfeb0395-9d79-41cb-aac2-1a3b32bee4d4
+		sourceLineageTag: month
+		summarizeBy: sum
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		lineageTag: b311440e-3fbc-429a-beb4-f31b0f6d2e7e
+		sourceLineageTag: month_name
+		summarizeBy: none
+		sourceColumn: month_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: f42c5da8-24bc-4040-aedd-c15fc1954b91
+		sourceLineageTag: quarter
+		summarizeBy: sum
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_name
+		dataType: string
+		lineageTag: 76f1f781-8aeb-4d0f-8332-823fa5a42721
+		sourceLineageTag: day_name
+		summarizeBy: none
+		sourceColumn: day_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_weekend
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f22014f-751d-49d7-bfca-23c8ca54264c
+		sourceLineageTag: is_weekend
+		summarizeBy: sum
+		sourceColumn: is_weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = entity
+		mode: directLake
+		source
+			entityName: dim_date
+			schemaName: GOLD_LAYER
+			expressionSource: 'DirectLake - Dev_Lakehouse'
+

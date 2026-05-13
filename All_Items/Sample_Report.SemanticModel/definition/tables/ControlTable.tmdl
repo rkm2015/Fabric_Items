@@ -1,0 +1,98 @@
+table ControlTable
+	lineageTag: c4d94aa6-9baf-41b2-891c-f393556fb87c
+
+	column ControlID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a2c82f5-80a3-4aaf-8842-2033973441ea
+		summarizeBy: count
+		sourceColumn: ControlID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceTableName
+		dataType: string
+		lineageTag: c151d29e-c3f1-4e75-95f9-504aa892097b
+		summarizeBy: none
+		sourceColumn: SourceTableName
+
+		annotation SummarizationSetBy = Automatic
+
+	column TargetTableName
+		dataType: string
+		lineageTag: 28a5e523-2918-4750-9694-03fc68f310f7
+		summarizeBy: none
+		sourceColumn: TargetTableName
+
+		annotation SummarizationSetBy = Automatic
+
+	column WatermarkColumn
+		dataType: string
+		lineageTag: b17d9b59-a567-4d66-ad41-9a804a3e77fa
+		summarizeBy: none
+		sourceColumn: WatermarkColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Watermark_Value
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2dd89273-7987-458a-bf6b-0e08cc41c908
+		summarizeBy: none
+		sourceColumn: Watermark_Value
+
+		variation Variation
+			isDefault
+			relationship: 7cdf9079-b8de-4ebf-b44c-2263033ab565
+			defaultHierarchy: LocalDateTable_f11b47c2-89e7-4294-924a-7df0a8e01a0b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column FilterClause
+		dataType: string
+		lineageTag: 89f78352-74b6-4203-9e05-31fcb891cf57
+		summarizeBy: none
+		sourceColumn: FilterClause
+
+		annotation SummarizationSetBy = Automatic
+
+	column StreamNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: f1018441-1d17-4288-aa9f-33a8b5a10256
+		summarizeBy: sum
+		sourceColumn: StreamNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 486cc06a-3f5a-4edf-8323-3a598299a3d0
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column Partition_column
+		dataType: string
+		lineageTag: 5967a8dd-548f-47df-8204-c16a56ec6fc7
+		summarizeBy: none
+		sourceColumn: Partition_column
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ControlTable = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("5kixbhi4ndte7d3w64fgn6wh34-6pb7qnk7bkmefis3q7ey4ncajy.datawarehouse.fabric.microsoft.com", "AdventureWork_DWH"),
+				    dbo_ControlTable = Source{[Schema="dbo",Item="ControlTable"]}[Data],
+				    #"Renamed Columns" = Table.RenameColumns(dbo_ControlTable,{{"WatermarkValue", "Watermark_Value"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

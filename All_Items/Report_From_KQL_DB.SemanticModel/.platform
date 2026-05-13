@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Report_From_KQL_DB"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ae64c5af-2e53-b277-4c5a-e967b22050b0"
+  }
+}
